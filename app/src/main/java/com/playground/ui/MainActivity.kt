@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.playground.R
 import com.playground.database.NoteEntry
-import com.playground.ui.noteslist.AdapterNotes
+import com.playground.ui.noteslist.AdapterNotesKt
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(it.rootView, "Add Item", Snackbar.LENGTH_LONG).show()
     }
 
-    lateinit var adapterNotes: AdapterNotes
+    lateinit var adapterNotes: AdapterNotesKt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 //        mDb.noteDao().insertNote(NoteEntry())
 
         bntAddNote.setOnClickListener(listenerAddNote)
-
         val notesEntries = ArrayList<NoteEntry>()
 
 
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             notesEntries.add(noteEntry)
 
         }
-        adapterNotes = AdapterNotes(this, notesEntries)
+        adapterNotes = AdapterNotesKt(notesEntries)
         rvListNotes.adapter = adapterNotes
 
     }
