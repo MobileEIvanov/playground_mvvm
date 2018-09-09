@@ -8,6 +8,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.List;
+
 /**
  * Created by emil.ivanov on 9/2/18.
  */
@@ -15,7 +17,7 @@ import android.arch.persistence.room.Update;
 public interface NoteDao {
 
     @Query("SELECT * FROM note ORDER BY priority")
-    LiveData<NoteEntry> loadAllNotes();
+    LiveData<List<NoteEntry>> loadAllNotes();
 
     @Insert
     void insertNote(NoteEntry noteEntry);
@@ -25,4 +27,7 @@ public interface NoteDao {
 
     @Delete
     void deleteNote(NoteEntry noteEntry);
+
+    @Query("SELECT * FROM note WHERE id = :id")
+    LiveData<NoteEntry> loadNoteById(int id);
 }

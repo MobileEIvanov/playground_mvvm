@@ -22,17 +22,17 @@ public class DiffNotes extends DiffUtil.Callback {
 
     @Override
     public int getOldListSize() {
-        return this.notesOld.size();
+        return notesOld != null ? notesOld.size() : 0;
     }
 
     @Override
     public int getNewListSize() {
-        return this.notesNew.size();
+        return notesNew != null ? notesNew.size() : 0;
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return notesOld.get(oldItemPosition).getId() == notesNew.get(newItemPosition).getId();
+        return notesOld.get(oldItemPosition).getTitle().equalsIgnoreCase(notesNew.get(newItemPosition).getTitle());
     }
 
     @Override
