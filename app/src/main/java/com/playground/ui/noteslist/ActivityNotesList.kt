@@ -33,22 +33,24 @@ class ActivityNotesList : AppCompatActivity() {
     private fun initialize() {
         viewModel = ViewModelProviders.of(this).get(NoteListViewModel::class.java)
         val notesEntries = ArrayList<NoteEntry>()
-        adapterNotes = AdapterNotesKt(notesEntries) { noteEntry: NoteEntry -> onNoteClickInteraction(noteEntry) }
+        adapterNotes = AdapterNotesKt(notesEntries, this::onNoteClickInteraction, this::onNoteDeleteInteraction)
         rvListNotes.adapter = adapterNotes
 
         bntAddNote.setOnClickListener(listenerAddNote)
     }
 
     private fun loadData() {
-        viewModel!!.notes.observe(this, Observer { adapterNotes.updateList((it as ArrayList<NoteEntry>?)!!) })
+        viewModel?.notes?.observe(this, Observer { adapterNotes.updateList((it as ArrayList<NoteEntry>?)!!) })
     }
 
 
     private fun onNoteClickInteraction(noteEntry: NoteEntry) {
-
         showSaveDialog(noteEntry.id)
     }
 
+    private fun onNoteDeleteInteraction(noteEntry: NoteEntry) {
+        viewModel?.delete(noteEntry)
+    }
 
     private fun showSaveDialog(noteId: Int) {
         var dialog: Fragment? = supportFragmentManager.findFragmentByTag(SaveNoteView.TAG)

@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.item_list_notes.view.*
  */
 class AdapterNotesKt
 constructor(private var notes: ArrayList<NoteEntry>,
-            private val clickListener: (NoteEntry) -> Unit)
+            private val clickListener: (NoteEntry) -> Unit,
+            private val deleteNoteListener: (NoteEntry) -> Unit)
     : RecyclerView.Adapter<AdapterNotesKt.VHNotes>() {
 
 
@@ -28,7 +29,7 @@ constructor(private var notes: ArrayList<NoteEntry>,
     override fun getItemCount() = notes.size
 
     override fun onBindViewHolder(holder: VHNotes, position: Int) {
-        holder.bindData(this.notes[position], clickListener)
+        holder.bindData(this.notes[position], clickListener, deleteNoteListener)
         holder.itemView.tag = notes[position]
     }
 
@@ -47,9 +48,11 @@ constructor(private var notes: ArrayList<NoteEntry>,
         private var note: NoteEntry? = null
 
 
-        fun bindData(note: NoteEntry, clickListener: (NoteEntry) -> Unit) {
+        fun bindData(note: NoteEntry, clickListener: (NoteEntry) -> Unit, deleteNoteListener: (NoteEntry) -> Unit) {
             this.note = note
             view.tvNoteTitle.text = note.title
+            view.tvNoteDescription.text = note.description
+            view.btnDelete.setOnClickListener { deleteNoteListener(note) }
             view.setOnClickListener { clickListener(note) }
         }
     }
