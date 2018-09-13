@@ -65,6 +65,5 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
                 mBinding.tvNoteTitle.setText(noteEntry.getTitle());
             }
         }
-
     }
 }
