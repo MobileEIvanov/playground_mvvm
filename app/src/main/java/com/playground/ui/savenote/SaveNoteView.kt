@@ -58,7 +58,8 @@ class SaveNoteView : BottomSheetDialogFragment() {
     }
 
     private fun populateData(noteEntry: NoteEntry?) {
-        view!!.inputNoteTitle.setText(noteEntry!!.title)
+        view?.inputNoteTitle?.setText(noteEntry?.title)
+        view?.inputNoteDesc?.setText(noteEntry?.description)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
