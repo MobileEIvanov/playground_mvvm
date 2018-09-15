@@ -1,4 +1,4 @@
-package com.playground.ui.noteslist
+package com.playground.utils
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

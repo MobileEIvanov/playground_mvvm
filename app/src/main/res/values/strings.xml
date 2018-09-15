@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Notes</string>
+
+
+    <!--Note List-->
     <string name="add_note">Add Note</string>
+
+    <!--Create Note-->
+    <string name="label_note_title">Title</string>
+    <string name="label_note_desc">Describe the note</string>
+    <string name="btn_save">SAVE</string>
+
 </resources>
