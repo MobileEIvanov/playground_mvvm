@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.playground.R;
-import com.playground.database.NoteEntry;
 import com.playground.databinding.ItemListNotesBinding;
+import com.playground.entities.NoteEntry;
 
 import java.util.List;
 

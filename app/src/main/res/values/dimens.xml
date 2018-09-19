@@ -9,4 +9,5 @@
     <dimen name="dimen_list_item_horizontal_margin">16dp</dimen>
     <dimen name="dimen_list_item_action_delete">36dp</dimen>
     <dimen name="dimen_list_action_margin">16dp</dimen>
+    <dimen name="dimen_font_size_empty_list">22sp</dimen>
 </resources>

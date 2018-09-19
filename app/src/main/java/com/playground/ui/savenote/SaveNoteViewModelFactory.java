@@ -4,24 +4,24 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.playground.database.AppDatabase;
+import com.playground.data.RepositoryNotes;
 
 /**
  * Created by emil.ivanov on 9/9/18.
  */
-public class SaveNoteViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class SaveNoteViewModelFactory implements ViewModelProvider.Factory {
 
-    private AppDatabase database;
-    private int id;
+    private RepositoryNotes repository;
 
-    public SaveNoteViewModelFactory(AppDatabase database, int id) {
-        this.database = database;
-        this.id = id;
+
+    public SaveNoteViewModelFactory(RepositoryNotes repositoryNotes) {
+        this.repository = repositoryNotes;
+
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new SaveNoteViewModel(database, id);
+        return (T) new SaveNoteViewModel(repository);
     }
 }

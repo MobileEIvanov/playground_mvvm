@@ -4,12 +4,14 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
+import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.playground.Injection
+import com.playground.NoteApplication
 import com.playground.R
-import com.playground.database.AppDatabase
-import com.playground.database.NoteEntry
+import com.playground.entities.NoteEntry
 import com.playground.utils.isValidTextInput
 import kotlinx.android.synthetic.main.layout_create_note.view.*
 
@@ -47,14 +49,12 @@ class SaveNoteView : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setStyle(DialogFragment.STYLE_NO_FRAME, 0)
         noteId = arguments!!.getInt(NoteEntry.DATA)
 
+        viewModel = ViewModelProviders.of(this, Injection.provideSaveNoteViewModelFactory(NoteApplication.getInstance())).get(SaveNoteViewModel::class.java)
 
-        factory = SaveNoteViewModelFactory(AppDatabase.getInstance(activity), noteId)
-        viewModel = ViewModelProviders.of(this, factory).get(SaveNoteViewModel::class.java)
-
-        viewModel!!.noteEntry.observe(this, Observer { populateData(it) })
-
+        viewModel?.getNoteEntry(noteId)?.observe(this, Observer { populateData(it) })
     }
 
     private fun populateData(noteEntry: NoteEntry?) {
@@ -70,8 +70,7 @@ class SaveNoteView : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        layout!!.btnSave.setOnClickListener(listenerSave)
+        layout?.btnSave?.setOnClickListener(listenerSave)
     }
 
 

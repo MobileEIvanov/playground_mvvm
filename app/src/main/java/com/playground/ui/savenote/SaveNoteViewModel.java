@@ -3,9 +3,8 @@ package com.playground.ui.savenote;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.playground.AppExecutors;
-import com.playground.database.AppDatabase;
-import com.playground.database.NoteEntry;
+import com.playground.data.RepositoryNotes;
+import com.playground.entities.NoteEntry;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,22 +14,24 @@ import org.jetbrains.annotations.NotNull;
 class SaveNoteViewModel extends ViewModel {
 
     private LiveData<NoteEntry> noteEntry;
-    private AppDatabase appDatabase;
+    private RepositoryNotes repository;
 
-    public SaveNoteViewModel(AppDatabase database, int id) {
-        noteEntry = database.noteDao().loadNoteById(id);
-        appDatabase = database;
+    public SaveNoteViewModel(RepositoryNotes repository) {
+        this.repository = repository;
     }
 
-    public LiveData<NoteEntry> getNoteEntry() {
-        return noteEntry;
+    public LiveData<NoteEntry> getNoteEntry(int id) {
+        if (this.noteEntry == null) {
+            this.noteEntry = repository.loadNoteById(id);
+        }
+        return this.noteEntry;
     }
 
     public void insert(NoteEntry noteEntry) {
-        AppExecutors.getInstance().diskIO().execute(() -> appDatabase.noteDao().insertNote(noteEntry));
+        repository.insertNote(noteEntry);
     }
 
     public void update(@NotNull NoteEntry noteEntry) {
-        AppExecutors.getInstance().diskIO().execute(() -> appDatabase.noteDao().updateNote(noteEntry));
+        repository.updateNote(noteEntry);
     }
 }

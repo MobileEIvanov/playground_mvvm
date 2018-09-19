@@ -41,6 +41,9 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraint_version"
     implementation "com.facebook.stetho:stetho:$stetho_version"
 
+    // Paging library
+    implementation "android.arch.paging:runtime:$pagingVersion"
+
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
 
