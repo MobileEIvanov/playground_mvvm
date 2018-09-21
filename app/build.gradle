@@ -4,7 +4,11 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
+
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.playground"
@@ -29,6 +33,30 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    flavorDimensions "srcLanguage"
+    productFlavors {
+        javaLang {
+            dimension "srcLanguage"
+        }
+        kotlinLang {
+            dimension "srcLanguage"
+        }
+    }
+
+    sourceSets {
+        javaLang {
+            java {
+                srcDirs = ['src/mainJava/java']
+            }
+        }
+        kotlinLang {
+            java {
+                srcDirs = ['src/mainKotlin/kotlin']
+            }
+        }
+    }
+
+
 }
 
 dependencies {
@@ -84,6 +112,15 @@ dependencies {
 
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
+
+    //Dagger2
+//    implementation "com.google.dagger:dagger:$dagger_version"
+//    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    // if you use the support libraries
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    compileOnly "org.glassfish:javax.annotation:3.1.1"
 
     // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
