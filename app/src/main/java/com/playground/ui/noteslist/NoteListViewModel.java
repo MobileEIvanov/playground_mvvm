@@ -1,36 +1,29 @@
 package com.playground.ui.noteslist;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
+import android.arch.paging.PagedList;
 
-import com.playground.AppExecutors;
-import com.playground.database.AppDatabase;
-import com.playground.database.NoteEntry;
-
-import java.util.List;
+import com.playground.data.RepositoryNotes;
+import com.playground.entities.NoteEntry;
 
 /**
  * Created by emil.ivanov on 9/9/18.
  */
-public class NoteListViewModel extends AndroidViewModel {
+public class NoteListViewModel extends ViewModel {
 
-    private LiveData<List<NoteEntry>> notes;
-    private AppDatabase appDatabase;
+    RepositoryNotes repository;
 
-    public NoteListViewModel(@NonNull Application application) {
-        super(application);
-        appDatabase = AppDatabase.getInstance(application);
-        notes = appDatabase.noteDao().loadAllNotes();
+    public NoteListViewModel(RepositoryNotes repositoryNotes) {
+        this.repository = repositoryNotes;
     }
 
-    public LiveData<List<NoteEntry>> getNotes() {
-        return notes;
+    public LiveData<PagedList<NoteEntry>> getNotes() {
+        return repository.loadNotes().getData();
     }
 
     public void delete(NoteEntry noteEntry) {
-        AppExecutors.getInstance().diskIO().execute(() -> appDatabase.noteDao().deleteNote(noteEntry));
+        repository.deleteNote(noteEntry);
     }
 
 }

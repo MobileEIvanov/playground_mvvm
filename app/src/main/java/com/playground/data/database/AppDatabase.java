@@ -1,4 +1,4 @@
-package com.playground.database;
+package com.playground.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -7,8 +7,10 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import com.playground.entities.NoteEntry;
+
 /**
- * Created by emil.ivanov on 9/2/18.
+ *
  */
 @Database(entities = {NoteEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
@@ -32,5 +34,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract NoteDao noteDao();
+    public abstract NoteEntryDao noteDao();
 }

@@ -1,10 +1,12 @@
 package com.playground.ui.noteslist
 
+import android.arch.paging.PagedListAdapter
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.playground.R
-import com.playground.database.NoteEntry
+import com.playground.entities.NoteEntry
 import com.playground.utils.inflate
 import kotlinx.android.synthetic.main.item_list_notes.view.*
 
@@ -15,10 +17,9 @@ import kotlinx.android.synthetic.main.item_list_notes.view.*
  * https://www.andreasjakl.com/recyclerview-kotlin-style-click-listener-android/
  */
 class AdapterNotesKt
-constructor(private var notes: ArrayList<NoteEntry>,
-            private val clickListener: (NoteEntry) -> Unit,
+constructor(private val clickListener: (NoteEntry) -> Unit,
             private val deleteNoteListener: (NoteEntry) -> Unit)
-    : RecyclerView.Adapter<AdapterNotesKt.VHNotes>() {
+    : PagedListAdapter<NoteEntry, AdapterNotesKt.VHNotes>(NOTE_COMPARATOR) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHNotes {
@@ -26,18 +27,10 @@ constructor(private var notes: ArrayList<NoteEntry>,
         return VHNotes(inflatedView)
     }
 
-    override fun getItemCount() = notes.size
-
     override fun onBindViewHolder(holder: VHNotes, position: Int) {
-        holder.bindData(this.notes[position], clickListener, deleteNoteListener)
-        holder.itemView.tag = notes[position]
-    }
-
-    fun updateList(newList: ArrayList<NoteEntry>) {
-        notes = newList
-//        val diffResult = DiffUtil.calculateDiff(DiffNotes(notes, newList))
-//        diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        val noteItem = getItem(position)
+        holder.bindData(noteItem, clickListener, deleteNoteListener)
+        holder.itemView.tag = noteItem
     }
 
 
@@ -48,12 +41,25 @@ constructor(private var notes: ArrayList<NoteEntry>,
         private var note: NoteEntry? = null
 
 
-        fun bindData(note: NoteEntry, clickListener: (NoteEntry) -> Unit, deleteNoteListener: (NoteEntry) -> Unit) {
-            this.note = note
-            view.tvNoteTitle.text = note.title
-            view.tvNoteDescription.text = note.description
-            view.btnDelete.setOnClickListener { deleteNoteListener(note) }
-            view.setOnClickListener { clickListener(note) }
+        fun bindData(note: NoteEntry?, clickListener: (NoteEntry) -> Unit, deleteNoteListener: (NoteEntry) -> Unit) {
+            if (note != null) {
+                this.note = note
+                view.tvNoteTitle.text = note.title
+                view.tvNoteDescription.text = note.description
+                view.btnDelete.setOnClickListener { deleteNoteListener(note) }
+                view.setOnClickListener { clickListener(note) }
+            }
+        }
+    }
+
+
+    companion object {
+        private val NOTE_COMPARATOR = object : DiffUtil.ItemCallback<NoteEntry>() {
+            override fun areItemsTheSame(oldItem: NoteEntry, newItem: NoteEntry): Boolean =
+                    oldItem.title == newItem.title
+
+            override fun areContentsTheSame(oldItem: NoteEntry, newItem: NoteEntry): Boolean =
+                    oldItem == newItem
         }
     }
 

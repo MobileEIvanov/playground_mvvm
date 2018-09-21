@@ -1,4 +1,4 @@
-package com.playground.database;
+package com.playground.data.database;
 
 import android.arch.persistence.room.TypeConverter;
 

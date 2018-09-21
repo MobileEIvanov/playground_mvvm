@@ -3,7 +3,7 @@ package com.playground.ui.noteslist;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-import com.playground.database.NoteEntry;
+import com.playground.entities.NoteEntry;
 
 import java.util.List;
 
